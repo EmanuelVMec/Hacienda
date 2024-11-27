@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Contratadores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Gestión de Contratadores</h1>
+
+        <!-- Tabla de contratadores -->
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Empleado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="contratadores-tbody">
+                    <!-- Los datos se cargarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Formulario para añadir contratador -->
+        <h2 class="mt-5">Añadir un Nuevo Contratador</h2>
+        <form id="contratador-form">
+            <div class="mb-3">
+                <label for="cedula" class="form-label">Cédula</label>
+                <input type="text" id="cedula" name="cedula" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" id="apellido" name="apellido" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" id="correo" name="correo" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="empleado_id" class="form-label">ID del Empleado</label>
+                <input type="text" id="empleado_id" name="empleado_id" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Añadir Contratador</button>
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const API_URL = '/contratadores/';
+
+        // Cargar contratadores
+        function cargarContratadores() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('contratadores-tbody');
+                    tbody.innerHTML = ''; // Limpia la tabla
+                    data.forEach(contratador => {
+                        const row = `
+                            <tr>
+                                <td>${contratador.cedula}</td>
+                                <td>${contratador.nombre}</td>
+                                <td>${contratador.apellido}</td>
+                                <td>${contratador.correo}</td>
+                                <td>${contratador.telefono}</td>
+                                <td>${contratador.empleado_id}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" onclick="eliminarContratador('${contratador.id}')">Eliminar</button>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error('Error al cargar contratadores:', error));
+        }
+
+        // Añadir contratador
+        document.getElementById('contratador-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = {
+                cedula: document.getElementById('cedula').value,
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                correo: document.getElementById('correo').value,
+                telefono: document.getElementById('telefono').value,
+                empleado_id: document.getElementById('empleado_id').value,
+            };
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(result => {
+                    alert('Contratador añadido con éxito');
+                    cargarContratadores(); // Recargar la tabla
+                    document.getElementById('contratador-form').reset(); // Limpiar formulario
+                })
+                .catch(error => console.error('Error al añadir contratador:', error));
+        });
+
+        // Eliminar contratador
+        function eliminarContratador(id) {
+            if (confirm('¿Estás seguro de eliminar este contratador?')) {
+                fetch(`${API_URL}${id}/`, {
+                    method: 'DELETE',
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Contratador eliminado con éxito');
+                            cargarContratadores(); // Recargar la tabla
+                        } else {
+                            alert('Error al eliminar contratador');
+                        }
+                    })
+                    .catch(error => console.error('Error al eliminar contratador:', error));
+            }
+        }
+
+        // Cargar contratadores al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarContratadores);
+    </script>
+</body>
+</html>
