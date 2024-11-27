@@ -16,13 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from Hacienda.views import EmpleadoAPIView, ContratadorAPIView, DepartamentoAPIView, PuestoAPIView, SalarioAPIView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('empleados/', include('Hacienda.urls')),
-    path('contratadores/',include('Hacienda.urls')),
-    path('departamentos/', include('Hacienda.urls')),
-    path('puestos/',include('Hacienda.urls')),
-    path('salarios/', include('Hacienda.urls')),
+    path('empleados/', EmpleadoAPIView.as_view(), name='empleado_list_create'),
+    path('contratadores/', ContratadorAPIView.as_view(), name='contratador_list_create'),
+    path('departamentos/', DepartamentoAPIView.as_view(), name='departamento_list_create'),
+    path('puestos/', PuestoAPIView.as_view(), name='puesto_list_create'),
+    path('salarios/', SalarioAPIView.as_view(), name='salario_list_create'),
+    
     # Asegúrate de incluir las rutas de la aplicación
 ]

@@ -1,9 +1,12 @@
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from rest_framework import status
 from .models import Empleado, Contratador, Departamento, Puesto, Salario
 from django.shortcuts import render
+from rest_framework.decorators import permission_classes
 
+@permission_classes([AllowAny])  # Permite acceso sin necesidad de autenticación
 class EmpleadoAPIView(APIView):
     def get(self, request):
         if request.accepts('text/html'):
@@ -25,6 +28,7 @@ class EmpleadoAPIView(APIView):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@permission_classes([AllowAny])
 class ContratadorAPIView(APIView):
     def get(self, request):
         if request.accepts('text/html'):
@@ -46,6 +50,7 @@ class ContratadorAPIView(APIView):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@permission_classes([AllowAny])
 class DepartamentoAPIView(APIView):
     def get(self, request):
         if request.accepts('text/html'):
@@ -64,6 +69,7 @@ class DepartamentoAPIView(APIView):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@permission_classes([AllowAny])
 class PuestoAPIView(APIView):
     def get(self, request):
         if request.accepts('text/html'):
@@ -82,6 +88,7 @@ class PuestoAPIView(APIView):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@permission_classes([AllowAny])
 class SalarioAPIView(APIView):
     def get(self, request):
         if request.accepts('text/html'):
