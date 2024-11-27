@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './Header';
+import EmpleadoForm from './EmpleadoForm';
+import ContratadorForm from './ContratadorForm';
+import DepartamentoForm from './DepartamentoForm';
+import PuestoForm from './PuestoForm'; // Asegúrate de importar correctamente el componente de Puesto
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <div style={{ marginTop: '80px', padding: '20px' }}> {/* Espacio para el header */}
+        <Routes>
+          <Route path="/empleados" element={<EmpleadoForm />} />
+          <Route path="/contratadores" element={<ContratadorForm />} />
+          <Route path="/departamentos" element={<DepartamentoForm />} />
+          <Route path="/puestos" element={<PuestoForm />} /> {/* Nueva ruta para Puesto */}
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

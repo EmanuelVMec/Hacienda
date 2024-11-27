@@ -27,7 +27,7 @@ class Contratador(models.Model):
 class Departamento(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=True)
     contratador = models.ForeignKey(Contratador, on_delete=models.CASCADE)
-    Empleado = models.ForeignKey(Empleado, on_delete=models.RESTRICT)
+    empleado = models.ForeignKey(Empleado, on_delete=models.RESTRICT)
     
     def __str__(self):
         return self.nombre
